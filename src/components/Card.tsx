@@ -1,18 +1,21 @@
+import { useState } from "react";
 import { useProduct } from "../api/features/hooks/useProduct";
 import card from "../assets/car.jpg";
+import AddProductModal from "./ProductModal";
 
-interface ProductType {
-  id: string;
-  title: string;
-  price: number;
-  color: string;
-  image?: string;
-}
+export const Card = ({ item }: { item: any }) => {
+  const { deleteProduct, updateProduct } = useProduct();
+  const [open, setOpen] = useState(false);
 
-const Card = ({ item }: { item: ProductType }) => {
-  const { deleteProduct } = useProduct();
   const handleDelete = (id: string) => {
     deleteProduct.mutate(id);
+  };
+
+  const handleUpdateProduct = (values: any) => {
+    const price = Number(values.price);
+    const body = { ...values, price };
+
+    updateProduct.mutate({ id: item.id, body });
   };
 
   return (
@@ -39,12 +42,19 @@ const Card = ({ item }: { item: ProductType }) => {
         >
           Delete
         </button>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md text-sm">
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md text-sm"
+        >
           Update
         </button>
       </div>
+      <AddProductModal
+        open={open}
+        setOpen={setOpen}
+        onCreate={handleUpdateProduct}
+        initialValues={item}
+      />
     </div>
   );
 };
-
-export default Card;

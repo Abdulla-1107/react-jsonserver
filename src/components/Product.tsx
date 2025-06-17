@@ -1,8 +1,8 @@
 import { Button } from "antd";
 import { useProduct } from "../api/features/hooks/useProduct";
-import Card from "./Card";
 import { useState } from "react";
 import AddProductModal from "./ProductModal";
+import { Card } from "./Card";
 
 const Product = () => {
   const { getProduct, createProduct } = useProduct();

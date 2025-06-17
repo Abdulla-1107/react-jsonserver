@@ -1,14 +1,23 @@
+// ProductModal.tsx
 import { Modal, Form, Input } from "antd";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   onCreate: (values: any) => void;
+  initialValues?: any;
 }
 
-const AddProductModal = ({ open, setOpen, onCreate }: Props) => {
+const AddProductModal = ({ open, setOpen, onCreate, initialValues }: Props) => {
   const [form] = Form.useForm();
+
+useEffect(() => {
+  if (open && initialValues) {
+    form.setFieldsValue(initialValues);
+  }
+}, [open, initialValues, form]);
+
 
   const handleFinish = (values: any) => {
     onCreate(values);
@@ -18,32 +27,32 @@ const AddProductModal = ({ open, setOpen, onCreate }: Props) => {
 
   return (
     <Modal
-      title="Yangi mahsulot qo'shish"
+      title="Mahsulotni tahrirlash"
       open={open}
       onOk={() => form.submit()}
       onCancel={() => setOpen(false)}
-      okText="Qo'shish"
+      okText="Saqlash"
       cancelText="Bekor qilish"
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Form.Item
           name="title"
           label="Sarlavha"
-          rules={[{ required: true, message: "Tittle kiriting" }]}
+          rules={[{ required: true, message: "Sarlavhani kiriting" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="price"
           label="Narxi"
-          rules={[{ required: true, message: "Narx kiriting" }]}
+          rules={[{ required: true, message: "Narxni kiriting" }]}
         >
           <Input type="number" />
         </Form.Item>
         <Form.Item
           name="color"
           label="Rangi"
-          rules={[{ required: true, message: "Rang kiriting" }]}
+          rules={[{ required: true, message: "Rangni kiriting" }]}
         >
           <Input />
         </Form.Item>
